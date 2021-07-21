@@ -21,7 +21,8 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-      $this->middleware(['auth', 'verified']);
+      $this->middleware(['api_auth']);
+      // $this->middleware(['api_auth', 'verified']);
     }
 
     /**
@@ -33,10 +34,11 @@ class HomeController extends Controller
     public function profile_setting()
     {
 
-        $userid = Auth::user()->id;
-        $user = User::where('id',$userid)->first();
+        // $userid = Auth::user()->id;
+        // $user = User::where('id',$userid)->first();
         // dd($user);
-        return view('user.profile-setting',compact('user'));
+        // return view('user.profile-setting',compact('user'));
+        return view('user.profile-setting');
     }
 
 

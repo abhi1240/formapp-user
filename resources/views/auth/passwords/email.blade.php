@@ -3,7 +3,7 @@
     <div class="signUP-admin">
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="col-xl-4 col-lg-5 col-md-5 p-0">
+                {{-- <div class="col-xl-4 col-lg-5 col-md-5 p-0">
                     <div class="signUP-admin-left signIn-admin-left position-relative">
                         <div class="signUP-overlay">
                             <img class="svg signupTop" src="{{ asset('img/svg/signupTop.svg') }}" alt="img"/>
@@ -20,7 +20,7 @@
                             <img class="img-fluid svg" src="{{ asset('img/svg/signupIllustration.svg') }}" alt="img"/>
                         </div><!-- End: .signUP-admin-left__img  -->
                     </div><!-- End: .signUP-admin-left  -->
-                </div><!-- End: .col-xl-4  -->
+                </div><!-- End: .col-xl-4  --> --}}
                 <div class="col-xl-8 col-lg-7 col-md-7 col-sm-8">
                     <div class="signUp-admin-right signIn-admin-right  p-md-40 p-10">
                         <div

@@ -35,14 +35,12 @@
 
 </body>
 <script type="text/javascript">
-$("#form_submit").click(function(){
 $(document).on('click', '#form_submit', function(){
   var email = $("#email").val();
   var password = $("#pwd").val();
 
   var url = $('meta[name="url"]').attr('content');
   var csrf_token = $('meta[name="csrf-token"]').attr('content');
-  console.log(email);
   // $('#assign_job_modal').modal('toggle');
   $.ajax({
     type: "POST",
@@ -57,6 +55,7 @@ $(document).on('click', '#form_submit', function(){
       console.log(res);
       },
     error:function(res){
+      console.log(res);
     },
   });
 

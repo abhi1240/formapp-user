@@ -40,10 +40,10 @@
             <!-- User Image -->
             <div class="u-block-hover g-pos-rel">
               <figure>
-                @if ($user->profile_pic_url)
-                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{$user->profile_pic_url}}" alt="Image Description">
+                @if (Session::has('users.profile_pic_url'))
+                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{Session::get('users')['profile_pic_url']}}" alt="Image Description">
                 @else
-                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{asset('/theme/assets/images/dummy-profile.jpg')}}" alt="Image Description">
+                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{asset('/theme/assets/images/dunmmy-profile.jpg')}}" alt="Image Description">
                 @endif
 
               </figure>
@@ -88,7 +88,7 @@
 
               <form class="" action="{{route('upload.profile.photo')}}" method="post" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="id" value="{{auth()->user()->id}}">
+                <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
                 <a  class="list-group-item list-group-item-action justify-content-between" id="profile-tab"  style="display:none">
                   <div id="yourBtn" onclick="getFile()"><i class="icon-cloud-upload"></i> Click to upload an image</div>
                     <div style='height: 0px;width: 0px; overflow:hidden;'>
@@ -139,7 +139,7 @@
 
               <form class="" action="{{route('update.user-info')}}" method="post">
                 @csrf
-                <input type="hidden" name="id" value="{{$user->id}}">
+                <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
               <div class="tab-pane fade show active" id="nav-1-1-default-hor-left-underline--1" role="tabpanel">
                 @if(session()->has('success'))
                         <div class="alert alert-success alert-dismissable">
@@ -176,7 +176,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Name</strong>
-                      <span class=""><input type="text" class="align-top" name="name" @isset($user) value="{{$user->name}} @endisset"></span>
+                      <span class=""><input type="text" class="align-top" name="name" @if(Session::has('users.name')) value="{{Session::get('users')['name']}} @endif"></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -191,7 +191,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Your ID</strong>
-                      <span class="align-top font-weight-bold"> @isset($user){{$user->user_id}} @endisset</span>
+                      <span class="align-top font-weight-bold"> @if(Session::has('users.seeder_id')){{Session::get('users')['seeder_id']}} @endif</span>
 
                     </div>
                     {{-- <span>
@@ -204,7 +204,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Company name</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="company_name" @isset($user) value="{{$user->company_name}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="company_name" @if(Session::has('users.company_name')) value="{{Session::get('users')['company_name']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -219,7 +219,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Position</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="position" @isset($user) value="{{$user->position}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="position" @if(Session::has('users.position')) value="{{Session::get('users')['position']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -234,7 +234,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Primary email address</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="email" @isset($user) value="{{$user->email }}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="email" @if(Session::has('users.email')) value="{{Session::get('users')['email'] }}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -249,7 +249,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Linked account</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="linked_account" @isset($user) value="{{$user->linked_account}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="linked_account" @if(Session::has('users.linked_account')) value="{{Session::get('users')['linked_account']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -264,7 +264,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Website</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="website" @isset($user) value="{{$user->website}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="website" @if(Session::has('users.website')) value="{{Session::get('users')['website']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -279,7 +279,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Phone number</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="phone_num" @isset($user) value="{{$user->phone_num}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="phone_num" @if(Session::has('users.phone_num')) value="{{Session::get('users')['phone_num']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -294,7 +294,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Office number</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="office_num" @isset($user) value="{{$user->office_num}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="office_num" @if(Session::has('users.office_num')) value="{{Session::get('users')['office_num']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -309,7 +309,7 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Address</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="address" @isset($user) value="{{$user->address}}" @endisset></span>
+                      <span class="align-top"><input type="text" class="align-top" name="address" @if(Session::has('users.address')) value="{{Session::get('users')['address']}}" @endif></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>

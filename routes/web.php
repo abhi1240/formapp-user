@@ -88,8 +88,9 @@ Route::get('/', [LoginController::class, 'loginForm']);
 Route::get('/test', [AuthController::class, 'test'])->name('test');
 	Route::post('/seeder_login', [AuthController::class, 'seeder_login'])->name('seeder.login');
 	Route::post('/seeder_register', [AuthController::class, 'seeder_register'])->name('seeder.register');
-    Route::group(['middleware' => 'auth'], function () {
-    Auth::routes(['verify' => true]);
+    Route::group(['middleware' => 'api_auth'], function () {
+			Route::post('/seeder_logout', [AuthController::class, 'seeder_logout'])->name('seeder.logout');
+    // Auth::routes(['verify' => true]);
     Route::get('/approval', [HomeController::class, 'approval'])->name('approval');
     Route::group(['middleware' => 'approved'], function () {
       Route::get('/profile-setting', [HomeController::class, 'profile_setting'])->name('profile-setting');

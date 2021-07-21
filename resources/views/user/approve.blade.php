@@ -15,7 +15,7 @@
                 <div class="card-header">{{ __('Welcome To Form Filling') }}</div>
 
                 <div class="card-body">
-                  <h5 >Hi {{Auth::user()->name}},</h5><br>
+                  <h5 >Hi {{Session::get('users')['name']}},</h5><br>
                   <p > Your account is waiting for our administrator approval, Please check back later.</p>
                 </div>
             </div>

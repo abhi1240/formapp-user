@@ -16,19 +16,14 @@
 
                 <!-- Form -->
                 <p class="text-danger"></p>
-                <form method="POST" action="{{ route('seeder.login') }}">
+                <form class="" action="{{route('seeder.login')}}" method="post">
                   @csrf
                    <div class="mb-4">
                   <div class="input-group g-brd-primary--focus">
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v4 g-color-primary">
                         <i class="icon-finance-067 u-line-icon-pro"></i>
                       </span>
-                      <input id="email" type="email" required class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Enter email">
-                      @error('email')
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                      @enderror
+                      <input id="email" type="email" required class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control " name="email" value="" required autocomplete="email" autofocus placeholder="Enter email">
                   </div>
 
                 </div>
@@ -38,12 +33,7 @@
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v4 g-color-primary">
                         <i class="icon-media-094 u-line-icon-pro"></i>
                       </span>
-                      <input id="password" type="password" required class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Enter password">
-                      @error('password')
-                          <span class="invalid-feedback" role="alert">
-                              <strong>{{ $message }}</strong>
-                          </span>
-                      @enderror
+                      <input id="password" type="password" required class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control " name="password" required autocomplete="current-password" placeholder="Enter password">
                   </div>
                 </div>
 
@@ -63,7 +53,7 @@
                 </div>
 
                 <div class="g-mb-50">
-                <input name="submit" type="submit" class="btn btn-md btn-block u-btn-primary rounded text-uppercase g-py-13" value="Login"/>
+                <button name="submit" type="submit" class="btn btn-md btn-block u-btn-primary rounded text-uppercase g-py-13"  >Login</button>
 
                 </div>
 
