@@ -64,12 +64,12 @@
                  </div>
                  <div class="card-body  mt-2" id="todays_file_card" >
                     <div id="file-folders" class="d-flex align-items-stretch flex-wrap date " >
-                       @isset($todays_imgs)
-                       @forelse ($todays_imgs as $key => $img)
+                       @isset($data['item']['todays_imgs'])
+                       @forelse ($data['item']['todays_imgs'] as $key => $img)
                        <div class="d-inline-flex m-1 ">
                           <button class="folder-container">
-                             <img class="img-file" src="{{$img->paper_img_url}}" alt="" >
-                             <div class="folder-name">{{$img->paper_img}}</div>
+                             <img class="img-file" src="{{$img['paper_img_url']}}" alt="" >
+                             <div class="folder-name">{{$img['paper_img']}}</div>
                           </button>
                        </div>
                        @empty
@@ -110,7 +110,6 @@
   $(document).ready(function() {
      $(".year_fol_btn").click(function() {
        var year_id = $(this).data('id');
-       // console.log(year_id);
        var url = $('meta[name="url"]').attr('content');
        var year = "<li class='breadcrumb-item '>"+ "<span class='breadcrumb__seperator'><span class='la la-angle-right'></span></span>" +year_id+"</li>";
        $.ajax({
@@ -119,7 +118,6 @@
              year: year_id,
            },
            success : function(data) {
-               // console.log(data);
                $('#month_section').html(data);
                $('.atbd-breadcrumb').html("");
                $('.atbd-breadcrumb').html('<li class="atbd-breadcrumb__item"><i class="fas fa-images mr-2"></i>Explorer</li>');

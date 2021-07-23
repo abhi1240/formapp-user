@@ -9,7 +9,7 @@
       <meta name="url" content="{{ url('/') }}" />
       <meta name="csrf-token" content="{{ csrf_token() }}">
       {{-- Title Section --}}
-      <title>{{ config('app.name') }} | @yield('title', $pageTitle ?? 'App')
+      <title>Form Filling | @yield('title', $pageTitle ?? 'App')
       </title>
       {{-- Meta Data --}}
       <meta name="description"
@@ -24,23 +24,16 @@
       {{-- Endinject --}}
       <link href="{{ asset('theme/assets/images/favicon.png')}}" rel="shortcut icon" type="image/png">
    </head>
-   <body class="layout-light side-menu @auth() overlayScroll @endauth">
-      @auth()
+   <body class="layout-light side-menu  overlayScroll ">
       <div class="mobile-search"></div>
       <div class="mobile-author-actions"></div>
       @include('user.dashboard.layouts.partials._header')
-      @endauth
       <main class="main-content">
-         @auth()
             @include('user.dashboard.layouts.partials._aside')
-         @endauth
          @section('content')
          @show
-         @auth()
             @include('user.dashboard.layouts.partials._footer')
-         @endauth
       </main>
-      @auth()
       <div id="overlayer">
          <span class="loader-overlay">
             <div class="atbd-spin-dots spin-lg">
@@ -52,7 +45,6 @@
          </span>
       </div>
       {{-- @include('layouts.partials._customizer') --}}
-      @endauth
       <div class="overlay-dark-sidebar"></div>
       <div class="customizer-overlay"></div>
       {{-- Inject:js, Global Theme JS Bundle (used by all pages) --}}

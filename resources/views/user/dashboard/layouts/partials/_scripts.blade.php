@@ -39,3 +39,4 @@
 <script src="{{ asset('js/jvectormap-init.js') }}"></script>
 <script src="{{ asset('js/leaflet-init.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('vendor_assets/js/datatables.min.js') }}"></script>

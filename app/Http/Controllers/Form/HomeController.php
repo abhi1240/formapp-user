@@ -10,6 +10,8 @@ use Illuminate\Http\UploadedFile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\MatchOldPassword;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Auth;
 
 class HomeController extends Controller
@@ -49,9 +51,7 @@ class HomeController extends Controller
 
     public function change_password()
     {
-      $userid = Auth::user()->id;
-      $user = User::where('id',$userid)->first();
-        return view('user.change-password',compact('user'));
+        return view('user.change-password');
     }
 
     public function approval()

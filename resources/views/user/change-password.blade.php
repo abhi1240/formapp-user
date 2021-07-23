@@ -36,10 +36,10 @@
             <!-- User Image -->
             <div class="u-block-hover g-pos-rel">
               <figure>
-                @if ($user->profile_pic_url)
-                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{$user->profile_pic_url}}" alt="Image Description">
+                @if (Session::has('users.profile_pic_url'))
+                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{Session::get('users')['profile_pic_url']}}" alt="Image Description">
                 @else
-                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{asset('/theme/assets/images/dummy-profile.jpg')}}" alt="Image Description">
+                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{asset('/theme/assets/images/dunmmy-profile.jpg')}}" alt="Image Description">
                 @endif
               </figure>
 
@@ -161,7 +161,7 @@
 
                 <form class="" action="{{route('reset-password')}}" method="post" >
                   @csrf
-                  <input type="hidden" name="id" value="{{auth()->user()->id}}">
+                  <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
                   <!-- Current Password -->
                   <div class="form-group row g-mb-25">
                     <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Current password</label>
@@ -205,7 +205,7 @@
                   <!-- End Verify Password -->
 
                   <!-- Login Verification -->
-                  <div class="form-group row g-mb-25">
+                  {{-- <div class="form-group row g-mb-25">
                     <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Login verification</label>
                     <div class="col-sm-9">
                       <label class="form-check-inline u-check g-pl-25">
@@ -233,7 +233,7 @@
                       </label>
                       <small class="d-block text-muted">When you check this box, you will be saved automatically login to your profile account. Also, you will be always logged in all our services.</small>
                     </div>
-                  </div>
+                  </div> --}}
                   <!-- End Save Password -->
 
                   <hr class="g-brd-gray-light-v4 g-my-25">

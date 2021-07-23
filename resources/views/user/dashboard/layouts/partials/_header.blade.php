@@ -29,7 +29,7 @@
                                aria-label="Search">
                     </form>
                 </li>
-                <li class="nav-message">
+                {{-- <li class="nav-message">
                     <div class="dropdown-custom">
                         <a href="javascript:;" class="nav-item-toggle">
                             <span data-feather="mail"></span></a>
@@ -85,7 +85,7 @@
                             <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
                         </div>
                     </div>
-                </li>
+                </li> --}}
                 <!-- ends: .nav-notification -->
                 <!-- ends: .nav-settings -->
                 <!-- ends: .nav-support -->
@@ -100,8 +100,8 @@
                                     <img src="{{ asset('img/author-nav.jpg') }}" alt="" class="rounded-circle">
                                 </div>
                                 <div>
-                                    <h6>{{ Auth::user()->name }}</h6>
-                                    <span>UI Designer</span>
+                                    <h6>{{Session::get('users')['name']}}</h6>
+                                    <span>Image Seeder</span>
                                 </div>
                             </div>
                             <div class="nav-author__options">
@@ -118,9 +118,11 @@
                                 <a href="{{ route('logout') }}" class="nav-author__signout" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     <span data-feather="log-out"></span> Sign Out</a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                    @csrf
-                                </form>
+                                    <form id="logout-form" action="{{ route('seeder.logout') }}" method="POST" class="d-none">
+                                      <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
+                                      <input type="hidden" name="api_token" value="{{Session::get('users')['api_token']}}">
+                                        @csrf
+                                    </form>
                             </div>
                         </div>
                         <!-- ends: .dropdown-wrapper -->
