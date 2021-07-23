@@ -4,6 +4,7 @@
 .notify-card{
   box-shadow: 0px 0px 5px rgb(139 159 250 / 58%);
   background-color: #f0edff;
+  border-left: 3px solid #5f63f2;
 }
 
 </style>
@@ -39,5 +40,5 @@
        </div>
      </div>
    </div>
-</div>     
+</div>
 @endsection

@@ -16,7 +16,7 @@
 
                 <div class="card-body">
                   <h5 >Hi {{Session::get('users')['name']}},</h5><br>
-                  <p > Your account is waiting for our administrator approval, Please logout and login again.</p>
+                  <p > Before proceeding, please check your email for a verification link.</p>
                 </div>
             </div>
         </div>

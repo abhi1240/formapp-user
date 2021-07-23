@@ -49,6 +49,12 @@ class AuthController extends Controller
         } else {
           $data['approved_at'] = Session::put('approved_at', '');
         }
+
+        if(isset($response['user']['email_verified_at'])){
+          $data['email_verified_at'] = Session::put('email_verified_at', $response['user']['email_verified_at']);
+        } else {
+          $data['email_verified_at'] = Session::put('email_verified_at', '');
+        }
         // $data['success'] = $response['success'];
         $data['users'] = Session::put('users', $response['user']);
         $data['sessions'] = Session::all();

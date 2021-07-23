@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class CheckApproved
+class CheckVerified
 {
     /**
      * Handle an incoming request.
@@ -17,10 +17,10 @@ class CheckApproved
     public function handle(Request $request, Closure $next)
     {
 
-      if (session()->get('approved_at') != '' ) {
+      if (session()->get('email_verified_at') != '') {
         return $next($request);
       }else {
-        return redirect()->route('approval');
+        return redirect()->route('verify-email');
       }
     }
 }

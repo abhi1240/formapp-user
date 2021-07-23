@@ -90,6 +90,9 @@ Route::get('/test', [AuthController::class, 'test'])->name('test');
 	Route::post('/seeder_register', [AuthController::class, 'seeder_register'])->name('seeder.register');
     Route::group(['middleware' => 'api_auth'], function () {
 			Route::post('/seeder_logout', [AuthController::class, 'seeder_logout'])->name('seeder.logout');
+			Route::get('/verify-email', [HomeController::class, 'verify_email'])->name('verify-email');
+
+			Route::group(['middleware' => 'verify_email'], function () {
     // Auth::routes(['verify' => true]);
     Route::get('/approval', [HomeController::class, 'approval'])->name('approval');
     Route::group(['middleware' => 'approved'], function () {
@@ -109,6 +112,7 @@ Route::get('/test', [AuthController::class, 'test'])->name('test');
       Route::get('/get_file', [UserDashboardController::class, 'get_file'])->name('user.explorer.file');
       });
     });
+		});
       //end
     Route::group(['prefix' => 'dashboards'], function () {
         Route::get('/social-media', [DashboardController::class, 'index'])->name('dashboards.index');

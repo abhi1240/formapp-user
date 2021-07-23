@@ -59,6 +59,11 @@ class HomeController extends Controller
         return view('user.approve');
     }
 
+    public function verify_email()
+    {
+        return view('user.verify-email');
+    }
+
     public function update_user_info(Request $request){
         $user_id = $request->get('id');
         $user_update = User::where('id',$user_id)->first();
