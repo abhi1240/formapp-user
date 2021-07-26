@@ -8,6 +8,19 @@
 
         <div class="container g-pt-100 g-pb-20">
           <div class="row justify-content-between">
+            @if(Session::has('users.api_token'))
+              <div class="col-md-6 col-lg-5 flex-md-unordered align-self-center g-mb-80">
+                <div class="g-bg-white rounded g-pa-50">
+                  <header class="text-center mb-4">
+                    <h2 class="h2 g-color-black g-font-weight-600">Dashboard</h2>
+                  </header>
+                  <div class="g-mb-50">
+                  <a href="{{route('user.dashboard')}}" class="btn btn-md btn-block u-btn-primary rounded text-uppercase g-py-13"  >Dashboard</a>
+
+                  </div>
+                  </div>
+              </div>
+            @else
             <div class="col-md-6 col-lg-5 flex-md-unordered align-self-center g-mb-80">
               <div class="g-bg-white rounded g-pa-50">
                 <header class="text-center mb-4">
@@ -65,7 +78,7 @@
                 </footer>
               </div>
             </div>
-
+          @endif
             <div class="col-md-6 flex-md-first align-self-center g-mb-80">
               <div class="mb-5">
                 <h1 class="h3 g-color-white g-font-weight-600 mb-3">Lorem ipsum dolor sit amet, <br>consectetur adipiscing elit!</h1>

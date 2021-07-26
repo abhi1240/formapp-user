@@ -41,37 +41,35 @@ class UpdateImageController extends Controller
       $api_token = Session::get('users')['api_token'];
       $enc_api_token = Crypt::encryptString($api_token);
       $session_id = Session::getId();
+      // dd($request);
 
-     if ($request->hasFile('paper_img') && $request->file('paper_img')->isValid()) {
-       $image = $request->file('paper_img');
-       $file = fopen($image, 'r');
-       // dd($file);
-          $response =  Http::attach('attachment', $image)
-                ->post('http://127.0.0.1:8000/api/user-image-upload', [
-                  'is_id' => $is_id,
-                  'paper_title' => $request->get('paper_title'),
-                  'publication' => $request->get('publication'),
-                  'language_id' => $request->get('language_id'),
-                  'language' => $request->get('language'),
-                  // 'paper_img' => $request->file('paper_img'),
-                  'paper_img' => $request->get('paper_img'),
-                  'session_id' => $session_id,
-                  'api_token' => $enc_api_token,
-                ]);
-        } else {
-          $response =  Http::post('http://127.0.0.1:8000/api/user-image-upload', $request->all());
-        }
-      // $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/user-image-upload',[
-      //   'is_id' => $is_id,
-      //   'paper_title' => $request->get('paper_title'),
-      //   'publication' => $request->get('publication'),
-      //   'language_id' => $request->get('language_id'),
-      //   'language' => $request->get('language'),
-      //   // 'paper_img' => $request->file('paper_img'),
-      //   'paper_img' => $request->get('paper_img'),
-      //   'session_id' => $session_id,
-      //   'api_token' => $enc_api_token,
-      // ]);
+      $image = $request->file('paper_img');
+      $body = [
+              "headers" => [
+              "Accept" => "multipart/form-data"
+             ],
+             "multipart" => [
+              "name" => "paper_img",
+              "contents" => file_get_contents($image),
+              "filename" => $image->getClientOriginalName(),
+
+            ],
+
+            "request" => [
+              'is_id' => $is_id,
+              'paper_title' => $request->get('paper_title'),
+              'publication' => $request->get('publication'),
+              'language_id' => $request->get('language_id'),
+              'language' => $request->get('language'),
+              // 'paper_img' => $request->file('paper_img'),
+              'paper_img' => $request->get('paper_img'),
+              'session_id' => $session_id,
+              'api_token' => $enc_api_token,
+            ]
+         ];
+         $encoded_body = mb_convert_encoding($body,'UTF-8', 'UTF-8'  );
+         // dd($body);
+      $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/user-image-upload',[$encoded_body]);
       $data = array();
       $data['res'] = $response->json();
       dd($data);

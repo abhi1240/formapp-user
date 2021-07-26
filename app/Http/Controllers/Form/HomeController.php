@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers\form;
 use App\Http\Controllers\Form\Controller;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
@@ -10,8 +15,6 @@ use Illuminate\Http\UploadedFile;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\MatchOldPassword;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Http\Client\Response;
 use Auth;
 
 class HomeController extends Controller
@@ -36,10 +39,6 @@ class HomeController extends Controller
     public function profile_setting()
     {
 
-        // $userid = Auth::user()->id;
-        // $user = User::where('id',$userid)->first();
-        // dd($user);
-        // return view('user.profile-setting',compact('user'));
         return view('user.profile-setting');
     }
 
@@ -65,43 +64,31 @@ class HomeController extends Controller
     }
 
     public function update_user_info(Request $request){
-        $user_id = $request->get('id');
-        $user_update = User::where('id',$user_id)->first();
-        $oldemail = $user_update->email;
-        $newemail = $request->get('email');
-        if ($oldemail == $newemail) {
-          $update_old = $user_update->update([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'company_name' => $request->get('company_name'),
-            'linked_account' => $request->get('linked_account'),
-            'website' => $request->get('website'),
-            'position' => $request->get('position'),
-            'office_num' => $request->get('office_num'),
-            'phone_num' => $request->get('phone_num'),
-            'address' => $request->get('address'),
-          ]);
-          if ($update_old) {
-            return redirect('/profile-setting')->with('success','profile updated successfilly');
-          }
-        }else {
-          // $email_verified_at = User::where('id',$user_id)->delete('email_verified_at');
-            $update_new = $user_update->update([
-            'name' => $request->get('name'),
-            'email' => $request->get('email'),
-            'company_name' => $request->get('company_name'),
-            'linked_account' => $request->get('linked_account'),
-            'email_verified_at' => NULL,
-            'website' => $request->get('website'),
-            'position' => $request->get('position'),
-            'office_num' => $request->get('office_num'),
-            'phone_num' => $request->get('phone_num'),
-            'address' => $request->get('address'),
-          ]);
-          if ($update_new) {
-            return redirect('/email/verify')->with('success','profile updated successfilly');
-          }
-        }
+      $is_id = Session::get('users')['seeder_id'];
+      $api_token = Session::get('users')['api_token'];
+      $enc_api_token = Crypt::encryptString($api_token);
+      $session_id = Session::getId();
+      $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/user-profile-setting',[
+          'is_id' => $is_id,
+          'name' => $request->name,
+          'email' => $request->email,
+          'company_name' => $request->company_name,
+          'linked_account' => $request->linked_account,
+          'website' => $request->website,
+          'position' => $request->position,
+          'office_num' => $request->office_num,
+          'phone_num' => $request->phone_num,
+          'address' => $request->address,
+          'session_id' => $session_id,
+          'api_token' => $enc_api_token,
+      ]);
+
+      if ($response->successful()) {
+        return redirect('/profile-setting')->with('success','profile updated successfilly');
+      }else {
+      return redirect('/profile-setting')->with('danger','Please try later');
+      }
+
     }
 
     public function upload_profile_pic(Request $request){
