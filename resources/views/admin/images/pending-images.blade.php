@@ -88,7 +88,7 @@
 	                                 </td>
 	                                 <td>
 	                                    <div class="userDatatable-content">
-	                                       {{$img->user_id}}
+	                                       {{$img->is_id}}
 	                                    </div>
 	                                 </td>
 	                                 <td>

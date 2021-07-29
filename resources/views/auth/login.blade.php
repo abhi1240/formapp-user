@@ -1,11 +1,33 @@
 @extends('home-layouts.app')
 @section('content')
+  <style media="screen">
+  .dzsparallaxer.height-is-based-on-content > div {
+    position: absolute;
+    }
+    .alert{
+      position:relative;
+      top:25px;
+      right: 2rem;
+      width:300px;
+    }
+  </style>
 <div class="">
   <section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall" data-options="{direction: 'reverse', settings_mode_oneelement_max_offset: '150'}">
         <!-- Parallax Image -->
         <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-size-cover g-bg-bluegray-opacity-0_3--after" style="height: 140%; background-image: url(theme/assets/img-temp/1920x1080/img35.jpg);"></div>
         <!-- End Parallax Image -->
-
+        @if(session()->has('success'))
+      <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ session()->get('success') }}
+      </div>
+        @endif
+        @if(session()->has('warning'))
+      <div class="alert alert-warning alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ session()->get('warning') }}
+      </div>
+        @endif
         <div class="container g-pt-100 g-pb-20">
           <div class="row justify-content-between">
             @if(Session::has('users.api_token'))

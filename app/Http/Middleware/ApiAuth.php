@@ -14,14 +14,15 @@ class ApiAuth
      public function handle(Request $request, Closure $next)
      {
        if (session()->get('api_token') != '' ) {
-         // if ((session()->get('approved_at')) != 'no'  ) {
+         if ((session()->get('rights')) == '0'  ) {
            return $next($request);
-         // } else {
-         //   return redirect('/approval');
-         // }
+         } else {
+           $request->session()->flush();
+           return redirect('/login')->with('warning','Unauthorised Error');
+         }
       }else {
         $request->session()->flush();
-        return redirect('/');
+        return redirect('/login')->with('warning','Unauthorised Error');
       }
      }
 }

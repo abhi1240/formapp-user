@@ -100,8 +100,8 @@
               <!-- End History -->
 
               <!-- Settings -->
-              <a href="#" class="list-group-item justify-content-between active">
-                <span><i class="icon-settings g-pos-rel g-top-1 g-mr-8"></i> Settings</span>
+              <a href="{{route('user.dashboard')}}" class="list-group-item justify-content-between active">
+                <span><i class="icon-home g-pos-rel g-top-1 g-mr-8"></i> Dashboard</span>
               </a>
               <!-- End Settings -->
             </div>

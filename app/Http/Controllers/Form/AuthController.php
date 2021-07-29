@@ -50,6 +50,12 @@ class AuthController extends Controller
           $data['approved_at'] = Session::put('approved_at', '');
         }
 
+        if(isset($response['user']['rights'])){
+          $data['rights'] = Session::put('rights', $response['user']['rights']);
+        } else {
+          $data['rights'] = Session::put('rights', '');
+        }
+
         if(isset($response['user']['email_verified_at'])){
           $data['email_verified_at'] = Session::put('email_verified_at', $response['user']['email_verified_at']);
         } else {
@@ -75,10 +81,11 @@ class AuthController extends Controller
         'name' => $request->name,
         'email' => $request->email,
         'password' => $request->password,
+        'rights' => '0',
         'password_confirmation' => $request->password_confirmation,
         'url' => $url,
     ]);
-
+    // dd($response);
     $data = array();
     $data['seeder'] = $response->json();
     // dd($data['seeder']);
@@ -97,7 +104,7 @@ class AuthController extends Controller
 
     // dd($response->successful());
     if ($response->successful()) {
-      return redirect('/profile-setting');
+      return redirect('/')->with('success','Successfully created account please login to continue');
     }
   }
 
