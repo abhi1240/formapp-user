@@ -1,5 +1,25 @@
 @extends('home-layouts.app')
 @section('content')
+  <style media="screen">
+  ul.dropdown-menu.auto_c {
+      min-width: 50rem;
+      padding: 5px;
+      margin-bottom: 12px;
+  }
+#citylist li {
+    padding: 4px;
+}
+#citylist a {
+    color: #6b6a6b;
+}
+
+#paper_auto_c li {
+    padding: 4px;
+}
+#paper_auto_c a {
+    color: #6b6a6b;
+}
+  </style>
 <section class=" g-py-50" style="background: url(/theme/assets/img/banner1.jpg);">
       <div class="container">
         <div class="d-sm-flex text-center">
@@ -47,53 +67,20 @@
               <!-- Figure Caption -->
               <figcaption class="u-block-hover__additional--fade g-bg-black-opacity-0_5 g-pa-30">
                 <div class="u-block-hover__additional--fade u-block-hover__additional--fade-up g-flex-middle">
-                  <!-- Figure Social Icons -->
-                  {{-- <ul class="list-inline text-center g-flex-middle-item--bottom g-mb-20">
-                    <li class="list-inline-item align-middle g-mx-7">
-                      <a class="u-icon-v1 u-icon-size--md g-color-white" href="#">
-                        <i class="icon-note u-line-icon-pro"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item align-middle g-mx-7">
-                      <a class="u-icon-v1 u-icon-size--md g-color-white" href="#">
-                        <i class="icon-notebook u-line-icon-pro"></i>
-                      </a>
-                    </li>
-                    <li class="list-inline-item align-middle g-mx-7">
-                      <a class="u-icon-v1 u-icon-size--md g-color-white" href="#">
-                        <i class="icon-settings u-line-icon-pro"></i>
-                      </a>
-                    </li>
-                  </ul> --}}
-                  <!-- End Figure Social Icons -->
+
                 </div>
               </figcaption>
-              <!-- End Figure Caption -->
 
-              <!-- User Info -->
               <span class="g-pos-abs g-top-20 g-left-0">
                   <a class="btn btn-sm u-btn-primary rounded-0" href="#"></a>
 
                 </span>
-              <!-- End User Info -->
             </div>
-            <!-- User Image -->
-
-            <!-- Sidebar Navigation -->
-
-            <!-- End Sidebar Navigation -->
-
           </div>
-          <!-- End Profile Sidebar -->
-
-          <!-- Profle Content -->
           <div class="col-lg-9">
             <!-- Nav tabs -->
             <ul class="nav nav-justified u-nav-v1-1 u-nav-primary g-brd-bottom--md g-brd-bottom-2 g-brd-primary g-mb-20" role="tablist" data-target="nav-1-1-default-hor-left-underline" data-tabs-mobile-type="slide-up-down" data-btn-classes="btn btn-md btn-block rounded-0 u-btn-outline-primary g-mb-20">
             </ul>
-            <!-- End Nav tabs -->
-
-            <!-- Tab panes -->
             <div id="nav-1-1-default-hor-left-underline" class="tab-content">
               <!-- Edit Profile -->
               <div class="tab-pane fade show active" id="nav-1-1-default-hor-left-underline--1" role="tabpanel">
@@ -138,52 +125,57 @@
 
                   <form class="g-brd-around g-brd-gray-light-v4 g-pa-30 g-mb-30" action="{{route('upload.image')}}" method="post" enctype="multipart/form-data">
                     @csrf
-                <!-- Text Input with Bottom Left Tooltip -->
-                <div class="form-group g-mb-20">
-                  <label class="g-mb-10">Paper</label>
-                  <div class="input-group g-brd-primary--focus g-mb-10">
-                    <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
-                      <i class="fa fa-edit"></i>
+                    <!-- Text Input with Bottom Left Tooltip -->
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10">Paper</label>
+                      <div class="input-group g-brd-primary--focus g-mb-10">
+                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                          <i class="fa fa-edit"></i>
+                        </div>
+                        <input class="form-control form-control-md border-left-0 rounded-0 pl-0" name="paper_title" type="text" placeholder="Title" id="paper_autocomplete">
+                      </div>
                     </div>
-                    <input class="form-control form-control-md border-left-0 rounded-0 pl-0" name="paper_title" type="text" placeholder="Title">
-                    <b class="tooltip tooltip-bottom-left u-tooltip--v1">Paper </b>
-                  </div>
-                </div>
-                <div class="form-group g-mb-20">
-                  <label class="g-mb-10">Publication</label>
-                  <div class="input-group g-brd-primary--focus g-mb-10">
-                    <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
-                      <i class="fa fa-edit"></i>
+                    <div class="form-group g-mb-20" id="">
+                    <div id="paper_auto_c"></div>
                     </div>
-                    <input class="form-control form-control-md border-left-0 rounded-0 pl-0" name="publication" type="text" placeholder="publication">
-                    <b class="tooltip tooltip-bottom-left u-tooltip--v1">Publication </b>
-                  </div>
-                </div>
-                <div class="form-group g-mb-20">
-                  <label class="g-mb-10">Language</label>
-                  <div class="input-group g-brd-primary--focus g-mb-10">
-                    <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
-                      <i class="fa fa-angle-down"></i>
+                    <div class="form-group g-mb-20" id="citys_section">
+                      <label class="g-mb-10">Publication</label>
+                      <div class="input-group g-brd-primary--focus g-mb-10">
+                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                          <i class="fa fa-edit"></i>
+                        </div>
+                        <input class="form-control form-control-md border-left-0 rounded-0 pl-0" value="" name="publication" id="publication_search" type="text" placeholder="publication">
+                        {{-- <b class="">Publication </b> --}}
+                      </div>
                     </div>
-                    <select class="form-control form-control-md border-left-0 rounded-0 pl-0" name="language_id" style="height:40px;" data-open-icon="fa fa-angle-down">
-                <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select Language &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
-                <option value="1">english</option>
-                <option value="2">kannada</option>
-                <option value="3">hindi</option>
-                <option value="4">tamil</option>
-              </select>
-                    <b class="tooltip tooltip-bottom-left u-tooltip--v1">Language</b>
-                  </div>
-                </div>
-              	<div id="yourBtn" onclick="getFile()"><i class="icon-cloud-upload"></i> Click to upload an image</div>
-                  <div style='height: 0px;width: 0px; overflow:hidden;'>
-                  <input id="upfile" type="file" value="" name="paper_img" onchange="loadPreview(this);sub(this)"/>
-                  </div>
+                    <div class="form-group g-mb-20" id="">
+                    <div id="citylist"></div>
+                    </div>
+                    <div class="form-group g-mb-20">
+                      <label class="g-mb-10">Language</label>
+                      <div class="input-group g-brd-primary--focus g-mb-10">
+                        <div class="input-group-addon d-flex align-items-center g-bg-white g-color-gray-light-v1 rounded-0">
+                          <i class="fa fa-angle-down"></i>
+                        </div>
+                        <select class="form-control form-control-md border-left-0 rounded-0 pl-0" id="select-tag" name="language_id" style="height:40px;" data-open-icon="fa fa-angle-down">
+                    <option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select Language &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                    @forelse ($data['item']['languages'] as $key => $value)
+                      <option value="{{$value['id']}}">{{$value['name']}}</option>
+                    @empty
+                    @endforelse
+                  </select>
+                        <b class="tooltip tooltip-bottom-left u-tooltip--v1">Language</b>
+                      </div>
+                    </div>
+                  	<div id="yourBtn" onclick="getFile()"><i class="icon-cloud-upload"></i> Click to upload an image</div>
+                      <div style='height: 0px;width: 0px; overflow:hidden;'>
+                      <input id="upfile" type="file" name="paper_img" onchange="loadPreview(this);sub(this)"/>
+                      </div>
 
-                <div class="text-sm-right">
-                  <a class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25 g-mr-10" href="#">Cancel</a>
-                  <button type="submit" class="btn u-btn-primary rounded-0 g-py-12 g-px-25" >Save Changes</button>
-                </div>
+                    <div class="text-sm-right">
+                      <a class="btn u-btn-darkgray rounded-0 g-py-12 g-px-25 g-mr-10" href="#">Cancel</a>
+                      <button type="submit" class="btn u-btn-primary rounded-0 g-py-12 g-px-25" >Save Changes</button>
+                    </div>
                 </form>
               </div>
               <!-- End Edit Profile -->
@@ -194,22 +186,84 @@
         </div>
       </div>
     </section>
+    <link href="http://demo.expertphp.in/css/jquery.ui.autocomplete.css" rel="stylesheet">
+<script src="http://demo.expertphp.in/js/jquery.js"></script>
+<script src="http://demo.expertphp.in/js/jquery-ui.min.js"></script>
+    <script src="{{ asset('vendor_assets/js/jquery/jquery-3.5.1.min.js') }}"></script>
     <script type="text/javascript">
     function loadPreview(input, id) {
     id = id || '#preview_img';
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-
         reader.onload = function (e) {
-            $(id)
-                    .attr('src', e.target.result);
-                    // .width(200)
-                    // .height(150);
+            $(id).attr('src', e.target.result);
         };
-
         reader.readAsDataURL(input.files[0]);
     }
- }
+    }
+    $('input').attr('autocomplete','off');
+    $( "#publication_search" ).on('keydown, keyup', function (e) {
 
+            var search_p = $(this).val();
+            var search_length = $(this).val().length;
+            if (search_length > 4 ) {
+              var url = $('meta[name="url"]').attr('content');
+              var csrf_token = $('meta[name="csrf-token"]').attr('content');
+              $.ajax({
+                type: "POST",
+                  headers: { 'X-CSRF-TOKEN': csrf_token },
+                 url : url + '/citys_autocomplete',
+                 data: {
+                   search: search_p,
+                 },
+                 success : function(data) {
+                   $('#citylist').fadeIn();
+                    $('#citylist').html(data);
+                 },
+                 error : function() {
+                     alert("Error");
+                 }
+              });
+            }
+          });
+
+          $(document).on('click', '.city_auto_list', function(){
+            var val1 = $(this).text();
+            console.log(val1);
+       $('#publication_search').val(val1);
+       $('#citylist').fadeOut();
+   });
+//paper autocomplete
+   $( "#paper_autocomplete" ).on('keydown, keyup', function (e) {
+
+           var search_p = $(this).val();
+           var search_length = $(this).val().length;
+           if (search_length > 2 ) {
+             var url = $('meta[name="url"]').attr('content');
+             var csrf_token = $('meta[name="csrf-token"]').attr('content');
+             $.ajax({
+               type: "POST",
+                 headers: { 'X-CSRF-TOKEN': csrf_token },
+                url : url + '/papers_autocomplete',
+                data: {
+                  search: search_p,
+                },
+                success : function(data) {
+                  $('#paper_auto_c').fadeIn();
+                   $('#paper_auto_c').html(data);
+                },
+                error : function() {
+                    alert("Error");
+                }
+             });
+           }
+         });
+
+         $(document).on('click', '.paper_auto_list', function(){
+           var val1 = $(this).text();
+           console.log(val1);
+      $('#paper_autocomplete').val(val1);
+      $('#paper_auto_c').fadeOut();
+  });
     </script>
 @endsection

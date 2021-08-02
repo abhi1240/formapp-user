@@ -68,8 +68,11 @@
                        @forelse ($data['item']['todays_imgs'] as $key => $img)
                        <div class="d-inline-flex m-1 ">
                           <button class="folder-container">
-                             <img class="img-file" src="{{$img['paper_img_url']}}" alt="" >
-                             <div class="folder-name">{{$img['paper_img']}}</div>
+                            <a id="img_popup" data-img ="{{$img['paper_img_url']}}" >
+                              <img class="img-file" src="{{$img['paper_img_url']}}" alt="" >
+                              <div class="folder-name">{{$img['paper_img']}}</div>
+                            </a>
+
                           </button>
                        </div>
                        @empty
@@ -103,6 +106,13 @@
       </div>
    </div>
  </div>
+ </div>
+ <div class="modal" id="img_modal" tabindex="-1" role="dialog" aria-hidden="true">
+ 		<div class="modal-dialog modal-md" role="document">
+ 				<div class="modal-content modal-bg-white ">
+ 						<img src=""  alt="" id="img_id">
+ 				</div>
+ 		</div>
  </div>
 @endsection
 @section('scripts')
@@ -184,7 +194,11 @@
      }
   });
   });
-
+  $(document).on('click', '#img_popup', function(){
+    var imgsrc = $(this).data('img');
+    $('#img_id').attr('src',imgsrc);
+    $('#img_modal').modal('toggle');
+  });
   </script>
 
 @endsection

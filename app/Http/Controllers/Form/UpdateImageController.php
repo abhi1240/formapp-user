@@ -19,112 +19,97 @@ use Auth;
 class UpdateImageController extends Controller
 {
 
-    public function get_citys(){
+    public function get_citys(Request $request){
       $api_token = Session::get('users')['api_token'];
       $enc_api_token = Crypt::encryptString($api_token);
-
-      $response = Http::accept('application/json')->get('http://127.0.0.1:8000/api/citys',[
+      $search = $request->search;
+      $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/citys',[
         'api_token' => $enc_api_token,
+        'search' => $search,
       ]);
       $data = array();
-      $data['citys'] = $response->json();
-      if ($response->successful()) {
-        return response()->json($data);
+      $data = $response->json();
+      if ($response['citys']) {
+        $output = '<ul class="dropdown-menu auto_c" style="display:block; position:relative">';
+        foreach($response['citys'] as $key => $row)
+        {
+         $output .= '
+         <li><a class="city_auto_list" href="#">'.$row['city'].'</a></li>
+         ';
+        }
+        $output .= '</ul>';
+
+        if ($response->successful()) {
+          return response()->json($output);
+        }
+      }
+
+    }
+
+    public function papers_autocomplete(Request $request){
+      $api_token = Session::get('users')['api_token'];
+      $enc_api_token = Crypt::encryptString($api_token);
+      $search = $request->search;
+      $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/papers_autocomplete',[
+        'api_token' => $enc_api_token,
+        'search' => $search,
+      ]);
+      $data = array();
+      $data = $response->json();
+      // dd($data);
+
+      if ($response['papers']) {
+        $output = '<ul class="dropdown-menu auto_c" style="display:block; position:relative">';
+        foreach($response['papers'] as $key => $row)
+        {
+         $output .= '
+         <li><a class="paper_auto_list" href="#">'.$row['name'].'</a></li>
+         ';
+        }
+        $output .= '</ul>';
+
+        if ($response->successful()) {
+          return response()->json($output);
+        }
       }
     }
 
 
     public function upload_image(Request $request){
 
-
-      $is_id = Session::get('users')['seeder_id'];
+      $datas = $request->all();
+      $datas['is_id'] = Session::get('users')['seeder_id'];
       $api_token = Session::get('users')['api_token'];
-      $enc_api_token = Crypt::encryptString($api_token);
+      $datas['api_token'] = Crypt::encryptString($api_token);
       $session_id = Session::getId();
 
-     if ($request->hasFile('paper_img') && $request->file('paper_img')->isValid()) {
-       $image = $request->file('paper_img');
-       $file = fopen($image, 'r');
-       // dd($file);
-          $response =  Http::attach('attachment', $image)
-                ->post('http://127.0.0.1:8000/api/user-image-upload', [
-                  'is_id' => $is_id,
-                  'paper_title' => $request->get('paper_title'),
-                  'publication' => $request->get('publication'),
-                  'language_id' => $request->get('language_id'),
-                  'language' => $request->get('language'),
-                  // 'paper_img' => $request->file('paper_img'),
-                  'paper_img' => $request->get('paper_img'),
-                  'session_id' => $session_id,
-                  'api_token' => $enc_api_token,
-                ]);
-        } else {
-          $response =  Http::post('http://127.0.0.1:8000/api/user-image-upload', $request->all());
-        }
-      // $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/user-image-upload',[
-      //   'is_id' => $is_id,
-      //   'paper_title' => $request->get('paper_title'),
-      //   'publication' => $request->get('publication'),
-      //   'language_id' => $request->get('language_id'),
-      //   'language' => $request->get('language'),
-      //   // 'paper_img' => $request->file('paper_img'),
-      //   'paper_img' => $request->get('paper_img'),
-      //   'session_id' => $session_id,
-      //   'api_token' => $enc_api_token,
-      // ]);
-      $data = array();
-      $data['res'] = $response->json();
-      dd($data);
+
+
+      if ($request->hasFile('paper_img') && $request->file('paper_img')->isValid()) {
+        $image = $request->file('paper_img');
+        $response = Http::attach('paper_img', file_get_contents($image), 'paperimg.jpg')
+            ->post('http://127.0.0.1:8000/api/user-image-upload', $datas);
+    } else {
+        $response = Http::post('http://127.0.0.1:8000/api/user-image-upload', $request->all());
+    }
+
       if ($response->successful()) {
+        $res = $response->json();
+        // dd($res);
+        if($res['success'] == 'true' && $res['error'] == 'false' && $res['duplicate'] == 'false'){
+          // dd('success');
+          $data = array();
         return redirect('/image-update')->with('success','Image uploaded successfully');
+      }elseif ($res['success'] == 'false' && $res['error'] == 'true' && $res['duplicate'] == 'false') {
+        // dd('error');
+        return redirect('/image-update')->with('danger','Please try later');
+      }elseif ($res['success'] == 'false' && $res['error'] == 'false' && $res['duplicate'] == 'true') {
+        // dd('dup');
+      return redirect('/image-update')->with('danger','Paper Title Already Exists');
+      }
       }else {
+        // dd('please try later');
       return redirect('/image-update')->with('danger','Please try later');
       }
-      //   $year = Carbon::now()->format('Y');
-      //   $month = Carbon::now()->format('m');
-      //   $date = Carbon::now()->format('d');
-      //   $month_save = Carbon::now()->format('F');
-      //   $user_id = Auth::user()->user_id;
-      //   $random_name = $request->get('paper_title');
-      //   // dd($date);
-      //
-      // $validated = $request->validate([
-      //   'paper_title'=>'required',
-      //   'publication'=>'required',
-      //   'language_id'=>'required',
-      //   'paper_img'=>'required|mimes:jpeg,jfif,png',
-      // ]);
-      //
-      // if ($validated) {
-      //   if($request->hasFile('paper_img')){
-      //         $image = $request->file('paper_img');
-      //         // dd($image);
-      //         $filename = $random_name.".".$request->file('paper_img')->extension();
-      //         // dd($filename);
-      //         $path = $image->move(public_path('/storage/files/images/').'/'.$year.'/'.$month.'/'.$date.'/',$filename);
-      //
-      //         $paper_img = $filename;
-      //         $paper_img_url = URL::asset('/storage/files/images/').'/'.$year.'/'.$month.'/'.$date.'/'.$filename;
-      //       }
-      //       // dd($path);
-      //
-      //   $create = new PendingImages([
-      //     'user_id' => $user_id,
-      //     'paper_title' => $request->get('paper_title'),
-      //     'publication' => $request->get('publication'),
-      //     'language_id' => $request->get('language_id'),
-      //     'paper_img' => $paper_img,
-      //     'paper_img_url' => $paper_img_url,
-      //     'year' => $year,
-      //     'month' => $month_save,
-      //     'date' => $date,
-      //
-      //   ]);
-      //
-      //   $save_success = $create->save();
-      // }
-      // if ($save_success) {
-      //   return redirect('/image-update')->with('success','Image uploaded successfully');
-      // }
     }
 }

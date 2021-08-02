@@ -29,75 +29,22 @@
                                aria-label="Search">
                     </form>
                 </li>
-                {{-- <li class="nav-message">
-                    <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle">
-                            <span data-feather="mail"></span></a>
-                        <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Messages <span
-                                    class="badge-circle badge-success ml-1">2</span></h2>
-                            <ul>
-                              <li class="author-offline">
-                                    <div class="user-avater">
-                                        <img src="{{ asset('img/team-1.png') }}" alt="">
-                                    </div>
-                                    <div class="user-message">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate"
-                                               style="max-width: 180px;">Web Design</a>
-                                            <span class="time-posted">3 hrs ago</span>
-                                        </p>
-                                        <p>
-                                            <span class="desc text-truncate" style="max-width: 215px;">Lorem ipsum dolor amet cosec Lorem ipsum</span>
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="" class="dropdown-wrapper__more">See All Message</a>
-                        </div>
-                    </div>
-                </li>
-                <!-- ends: nav-message -->
-                <li class="nav-notification">
-                    <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle">
-                            <span data-feather="bell"></span></a>
-                        <div class="dropdown-wrapper">
-                            <h2 class="dropdown-wrapper__title">Notifications <span
-                                    class="badge-circle badge-warning ml-1">4</span></h2>
-                            <ul>
-                                <li class="nav-notification__single nav-notification__single d-flex flex-wrap">
-                                    <div class="nav-notification__type nav-notification__type--danger">
-                                        <span data-feather="heart"></span>
-                                    </div>
-                                    <div class="nav-notification__details">
-                                        <p>
-                                            <a href="" class="subject stretched-link text-truncate"
-                                               style="max-width: 180px;">James</a>
-                                            <span>sent you a message</span>
-                                        </p>
-                                        <p>
-                                            <span class="time-posted">5 hours ago</span>
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
-                            <a href="" class="dropdown-wrapper__more">See all incoming activity</a>
-                        </div>
-                    </div>
-                </li> --}}
-                <!-- ends: .nav-notification -->
-                <!-- ends: .nav-settings -->
-                <!-- ends: .nav-support -->
-                <!-- ends: .nav-flag-select -->
+
                 <li class="nav-author">
                     <div class="dropdown-custom">
-                        <a href="javascript:;" class="nav-item-toggle"><img src="{{ asset('img/author-nav.jpg') }}"
-                                                                            alt="" class="rounded-circle"></a>
+                        <a href="javascript:;" class="nav-item-toggle">@if(Session::has('users.profile_pic_url'))
+                          <img src="{{ Session::get('users')['profile_pic_url'] }}" alt="" class="rounded-circle">
+                          @else
+                            <img src="{{ asset('img/author-nav.jpg') }}" alt="" class="rounded-circle">
+                        @endif</a>
                         <div class="dropdown-wrapper">
                             <div class="nav-author__info">
                                 <div class="author-img">
-                                    <img src="{{ asset('img/author-nav.jpg') }}" alt="" class="rounded-circle">
+                                  @if(Session::has('users.profile_pic_url'))
+                                    <img src="{{ Session::get('users')['profile_pic_url'] }}" alt="" class="rounded-circle">
+                                    @else
+                                      <img src="{{ asset('img/author-nav.jpg') }}" alt="" class="rounded-circle">
+                                  @endif
                                 </div>
                                 <div>
                                     <h6>{{Session::get('users')['name']}}</h6>

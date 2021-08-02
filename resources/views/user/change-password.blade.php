@@ -163,7 +163,7 @@
                   @csrf
                   <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
                   <!-- Current Password -->
-                  <div class="form-group row g-mb-25">
+                  {{-- <div class="form-group row g-mb-25">
                     <label class="col-sm-3 col-form-label g-color-gray-dark-v2 g-font-weight-700 text-sm-right g-mb-10">Current password</label>
                     <div class="col-sm-9">
                       <div class="input-group g-brd-primary--focus">
@@ -173,7 +173,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
                   <!-- End Current Password -->
 
                   <!-- New Password -->

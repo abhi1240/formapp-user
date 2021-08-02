@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <!-- ends: .card -->
-                        <div class="card card-default card-md mb-4">
+                        {{-- <div class="card card-default card-md mb-4">
                             <div class="card-header  py-20">
                                 <h6>Select Tag</h6>
                             </div>
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <!-- ends: .card -->
                     </div>
                     <!-- ends: .col-lg-6 -->

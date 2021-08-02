@@ -16,6 +16,12 @@
         <!-- Parallax Image -->
         <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-size-cover g-bg-bluegray-opacity-0_3--after" style="height: 140%; background-image: url(theme/assets/img-temp/1920x1080/img35.jpg);"></div>
         <!-- End Parallax Image -->
+        @if(session()->has('error'))
+      <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ session()->get('error') }}
+      </div>
+        @endif
         @if(session()->has('success'))
       <div class="alert alert-success alert-dismissable">
         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
@@ -28,6 +34,18 @@
           {{ session()->get('warning') }}
       </div>
         @endif
+          @if(session()->has('info'))
+       <div class="alert alert-info alert-dismissable">
+         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+           {{ session()->get('info') }}
+       </div>
+         @endif
+          @if(session()->has('danger'))
+       <div class="alert alert-danger alert-dismissable">
+         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+           {{ session()->get('danger') }}
+       </div>
+         @endif
         <div class="container g-pt-100 g-pb-20">
           <div class="row justify-content-between">
             @if(Session::has('users.api_token'))

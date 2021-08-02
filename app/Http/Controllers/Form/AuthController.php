@@ -28,50 +28,49 @@ class AuthController extends Controller
 
 
     if ($response->successful()) {
+        $res = $response->json();
+        if($res['success'] == 'true'){
 
-      // if ($response['success']) {
-        // Session::flush();
+          $agent = new Agent();
+          // $user_agent = $agent->browser();
+          $data['browser_info'] = Session::put('browser_info', $agent);
 
-        $agent = new Agent();
-        // $user_agent = $agent->browser();
-        $data['browser_info'] = Session::put('browser_info', $agent);
+          $data = array();
 
-        $data = array();
+          $data['seeder'] = $response->json();
+          if(isset($response['user']['api_token'])){
+            $data['api_token'] = Session::put('api_token', $response['user']['api_token']);
+          } else {
+            $data['api_token'] = Session::put('api_token', '');
+          }
+          if(isset($response['user']['approved_at'])){
+            $data['approved_at'] = Session::put('approved_at', $response['user']['approved_at']);
+          } else {
+            $data['approved_at'] = Session::put('approved_at', '');
+          }
 
-        $data['seeder'] = $response->json();
-        if(isset($response['user']['api_token'])){
-          $data['api_token'] = Session::put('api_token', $response['user']['api_token']);
-        } else {
-          $data['api_token'] = Session::put('api_token', '');
+          if(isset($response['user']['rights'])){
+            $data['rights'] = Session::put('rights', $response['user']['rights']);
+          } else {
+            $data['rights'] = Session::put('rights', '');
+          }
+
+          if(isset($response['user']['email_verified_at'])){
+            $data['email_verified_at'] = Session::put('email_verified_at', $response['user']['email_verified_at']);
+          } else {
+            $data['email_verified_at'] = Session::put('email_verified_at', '');
+          }
+          // $data['success'] = $response['success'];
+          $data['users'] = Session::put('users', $response['user']);
+          $data['sessions'] = Session::all();
+          // dd($data);
+          return redirect('/profile-setting')->with('success','Logged in successfully');
+
+        } elseif ($res['success'] == 'false') {
+          return redirect('/')->withError('User Unauthorised');
         }
-        if(isset($response['user']['approved_at'])){
-          $data['approved_at'] = Session::put('approved_at', $response['user']['approved_at']);
-        } else {
-          $data['approved_at'] = Session::put('approved_at', '');
-        }
-
-        if(isset($response['user']['rights'])){
-          $data['rights'] = Session::put('rights', $response['user']['rights']);
-        } else {
-          $data['rights'] = Session::put('rights', '');
-        }
-
-        if(isset($response['user']['email_verified_at'])){
-          $data['email_verified_at'] = Session::put('email_verified_at', $response['user']['email_verified_at']);
-        } else {
-          $data['email_verified_at'] = Session::put('email_verified_at', '');
-        }
-        // $data['success'] = $response['success'];
-        $data['users'] = Session::put('users', $response['user']);
-        $data['sessions'] = Session::all();
-        // dd($data);
-        return redirect('/profile-setting');
-      // }else {
-      // return redirect('/');
-      // }
-
     }
-    return redirect('/');
+    return redirect('/')->withErrors('User Unauthorised');
   }
 
   public function seeder_register(Request $request){
@@ -85,27 +84,32 @@ class AuthController extends Controller
         'password_confirmation' => $request->password_confirmation,
         'url' => $url,
     ]);
-    // dd($response);
-    $data = array();
-    $data['seeder'] = $response->json();
-    // dd($data['seeder']);
-    if(isset($response['seeder']['api_token'])){
-      $data['api_token'] = Session::put('api_token', $response['seeder']['api_token']);
-    } else {
-      $data['api_token'] = Session::put('api_token', '');
-    }
-    if(isset($response['seeder']['approved_at'])){
-      $data['approved_at'] = Session::put('approved_at', $response['seeder']['approved_at']);
-    } else {
-      $data['approved_at'] = Session::put('approved_at', '');
-    }
-    $data['users'] = Session::put('users', $response['seeder']);
-    $data['sessions'] = Session::all();
 
-    // dd($response->successful());
     if ($response->successful()) {
-      return redirect('/')->with('success','Successfully created account please login to continue');
+      $res = $response->json();
+      if($res['success'] == 'true'){
+        $data = array();
+        $data['seeder'] = $response->json();
+        // dd($data['seeder']);
+        if(isset($response['seeder']['api_token'])){
+          $data['api_token'] = Session::put('api_token', $response['seeder']['api_token']);
+        } else {
+          $data['api_token'] = Session::put('api_token', '');
+        }
+        if(isset($response['seeder']['approved_at'])){
+          $data['approved_at'] = Session::put('approved_at', $response['seeder']['approved_at']);
+        } else {
+          $data['approved_at'] = Session::put('approved_at', '');
+        }
+        $data['users'] = Session::put('users', $response['seeder']);
+        $data['sessions'] = Session::all();
+
+        return redirect('/')->with('success','Successfully created account please login to continue');
+      } elseif ($res['success'] == 'false') {
+        return redirect('/register')->withError('Please try later');
+      }
     }
+    return redirect('/register')->withError('Please try later');
   }
 
   public function seeder_logout(Request $request){

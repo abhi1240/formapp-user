@@ -4,8 +4,16 @@
     input{
       border:none;
       width: 72%;
-
     }
+    .dzsparallaxer.height-is-based-on-content > div {
+      position: absolute;
+      }
+      .alert{
+        position: absolute;
+        top: 10rem;
+        right: 2rem;
+        width: 300px
+      }
   </style>
 <section class=" g-py-50" style="background: url(/theme/assets/img/banner1.jpg);">
       <div class="container">
@@ -31,6 +39,36 @@
           </div>
         </div>
       </div>
+      @if(session()->has('error'))
+    <div class="alert alert-danger alert-dismissable">
+      <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ session()->get('error') }}
+    </div>
+      @endif
+      @if(session()->has('success'))
+    <div class="alert alert-success alert-dismissable">
+      <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ session()->get('success') }}
+    </div>
+      @endif
+      @if(session()->has('warning'))
+    <div class="alert alert-warning alert-dismissable">
+      <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+        {{ session()->get('warning') }}
+    </div>
+      @endif
+        @if(session()->has('info'))
+     <div class="alert alert-info alert-dismissable">
+       <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+         {{ session()->get('info') }}
+     </div>
+       @endif
+        @if(session()->has('danger'))
+     <div class="alert alert-danger alert-dismissable">
+       <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+         {{ session()->get('danger') }}
+     </div>
+       @endif
     </section>
     <section class="g-mb-100">
       <div class="work-panel-des container">
@@ -40,8 +78,8 @@
             <!-- User Image -->
             <div class="u-block-hover g-pos-rel">
               <figure>
-                @if (Session::has('users.profile_pic_url'))
-                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{Session::get('users')['profile_pic_url']}}" alt="Image Description">
+                @if ($data['item']['seeder_details']['profile_pic_url'])
+                  <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{$data['item']['seeder_details']['profile_pic_url']}}" alt="Image Description">
                 @else
                   <img class="img-fluid w-100 u-block-hover__main--zoom-v1" src="{{asset('/theme/assets/images/dunmmy-profile.jpg')}}" alt="Image Description">
                 @endif
@@ -92,7 +130,7 @@
                 <a  class="list-group-item list-group-item-action justify-content-between" id="profile-tab"  style="display:none">
                   <div id="yourBtn" onclick="getFile()"><i class="icon-cloud-upload"></i> Click to upload an image</div>
                     <div style='height: 0px;width: 0px; overflow:hidden;'>
-                    <input id="upfile" name="profile_pic" type="file" value="" onchange="sub(this)" />
+                    <input id="upfile" name="profile_pic" type="file" onchange="sub(this)" />
                     </div>
                     <button type="submit" class="btn u-btn-primary rounded-0 g-py-12 g-px-25 btn-block" name="button">Upload</button>
                 </a>
@@ -141,33 +179,6 @@
                 @csrf
                 <input type="hidden" name="id" value="{{Session::get('users')['id']}}">
               <div class="tab-pane fade show active" id="nav-1-1-default-hor-left-underline--1" role="tabpanel">
-                @if(session()->has('success'))
-                        <div class="alert alert-success alert-dismissable">
-                          <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
-                            {{ session()->get('success') }}
-                        </div>
-                          @endif
-                          <!-- info -->
-                          @if(session()->has('info'))
-                       <div class="alert alert-info alert-dismissable">
-                         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
-                           {{ session()->get('info') }}
-                       </div>
-                         @endif
-                          <!-- warning -->
-                          @if(session()->has('warning'))
-                       <div class="alert alert-warning alert-dismissable">
-                         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
-                           {{ session()->get('warning') }}
-                       </div>
-                         @endif
-                          <!-- danger -->
-                          @if(session()->has('danger'))
-                       <div class="alert alert-danger alert-dismissable">
-                         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
-                           {{ session()->get('danger') }}
-                       </div>
-                         @endif
                 <h2 class="h4 g-font-weight-300">Manage your Name, ID and Email Addresses</h2>
                 <p>Below are name, email addresse, contacts and more on file for your account.</p>
 
@@ -176,7 +187,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Name</strong>
-                      <span class=""><input type="text" class="align-top" name="name" @if(Session::has('users.name')) value="{{Session::get('users')['name']}} @endif"></span>
+                      <span class=""><input type="text" class="align-top" name="name" @isset($data['item']['seeder_details']['name'])
+                        value="{{$data['item']['seeder_details']['name']}}"
+                      @endisset></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -191,7 +204,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Your ID</strong>
-                      <span class="align-top font-weight-bold"> @if(Session::has('users.seeder_id')){{Session::get('users')['seeder_id']}} @endif</span>
+                      <span class="align-top font-weight-bold"> @isset($data['item']['seeder_details']['seeder_id'])
+                        {{$data['item']['seeder_details']['seeder_id']}}
+                      @endisset </span>
 
                     </div>
                     {{-- <span>
@@ -204,7 +219,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Company name</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="company_name" @if(Session::has('users.company_name')) value="{{Session::get('users')['company_name']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="company_name"@isset($data['item']['seeder_details']['company_name'])
+                        value="{{$data['item']['seeder_details']['company_name']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -219,7 +236,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Position</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="position" @if(Session::has('users.position')) value="{{Session::get('users')['position']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="position" @isset($data['item']['seeder_details']['position'])
+                        value="{{$data['item']['seeder_details']['position']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -234,7 +253,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Primary email address</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="email" @if(Session::has('users.email')) value="{{Session::get('users')['email'] }}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="email" @isset($data['item']['seeder_details']['email'])
+                        value="{{$data['item']['seeder_details']['email']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -249,7 +270,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Linked account</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="linked_account" @if(Session::has('users.linked_account')) value="{{Session::get('users')['linked_account']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="linked_account" @isset($data['item']['seeder_details']['linked_account'])
+                        value="{{$data['item']['seeder_details']['linked_account']}}"
+                      @endisset></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -264,7 +287,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Website</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="website" @if(Session::has('users.website')) value="{{Session::get('users')['website']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="website" @isset($data['item']['seeder_details']['website'])
+                        value="{{$data['item']['seeder_details']['website']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -279,7 +304,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Phone number</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="phone_num" @if(Session::has('users.phone_num')) value="{{Session::get('users')['phone_num']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="phone_num" @isset($data['item']['seeder_details']['phone_num'])
+                        value="{{$data['item']['seeder_details']['phone_num']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -294,7 +321,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Office number</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="office_num" @if(Session::has('users.office_num')) value="{{Session::get('users')['office_num']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="office_num" @isset($data['item']['seeder_details']['office_num'])
+                        value="{{$data['item']['seeder_details']['office_num']}}"
+                      @endisset ></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>
@@ -309,7 +338,9 @@
                   <li class="d-flex align-items-center justify-content-between g-brd-bottom g-brd-gray-light-v4 g-py-15">
                     <div class="g-pr-10 col-md-12">
                       <strong class="d-block d-md-inline-block g-color-gray-dark-v2 g-width-200 g-pr-10">Address</strong>
-                      <span class="align-top"><input type="text" class="align-top" name="address" @if(Session::has('users.address')) value="{{Session::get('users')['address']}}" @endif></span>
+                      <span class="align-top"><input type="text" class="align-top" name="address" @isset($data['item']['seeder_details']['address'])
+                        value="{{$data['item']['seeder_details']['address']}}"
+                      @endisset></span>
                         <span>
                             <i class="icon-pencil g-color-gray-dark-v5 g-color-primary--hover g-cursor-pointer g-pos-rel g-top-1"></i>
                           </span>

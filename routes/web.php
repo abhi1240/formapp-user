@@ -105,7 +105,8 @@ Route::get('/test', [AuthController::class, 'test'])->name('test');
       Route::post('/profile-pic-update', [HomeController::class, 'upload_profile_pic'])->name('upload.profile.photo');
       Route::post('/image-upload', [UpdateImageController::class, 'upload_image'])->name('upload.image');
 			// Route::get('/states', [UpdateImageController::class, 'get_states'])->name('states');
-			Route::Post('/citys', [UpdateImageController::class, 'get_citys'])->name('citys');
+			Route::post('/citys_autocomplete', [UpdateImageController::class, 'get_citys'])->name('citys');
+			Route::post('/papers_autocomplete', [UpdateImageController::class, 'papers_autocomplete']);
       //dfashboard
       Route::group(['prefix' => 'user'], function () {
       Route::get('/dashboard', [UserDashboardController::class, 'dashboard'])->name('user.dashboard');

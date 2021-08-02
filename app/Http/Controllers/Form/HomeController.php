@@ -38,14 +38,37 @@ class HomeController extends Controller
 
     public function profile_setting()
     {
+      $is_id = Session::get('users')['seeder_id'];
+      $api_token = Session::get('users')['api_token'];
+      $enc_api_token = Crypt::encryptString($api_token);
+      $response = Http::accept('application/json')->get('http://127.0.0.1:8000/api/seeder_profile_details',[
+          'api_token' => $enc_api_token,
+          'is_id' => $is_id,
+      ]);
+      if ($response->successful()) {
+        $data = array();
 
-        return view('user.profile-setting');
+        $data['item'] = $response->json();
+        return view('user.profile-setting',compact('data'));
+      }
     }
 
 
     public function image_update()
     {
-        return view('user.image-update');
+      $is_id = Session::get('users')['seeder_id'];
+      $api_token = Session::get('users')['api_token'];
+      $enc_api_token = Crypt::encryptString($api_token);
+      $response = Http::accept('application/json')->get('http://127.0.0.1:8000/api/seeder_profile_details',[
+          'api_token' => $enc_api_token,
+          'is_id' => $is_id,
+      ]);
+      if ($response->successful()) {
+        $data = array();
+
+        $data['item'] = $response->json();
+        return view('user.image-update',compact('data'));
+      }
     }
 
     public function change_password()
@@ -84,7 +107,14 @@ class HomeController extends Controller
       ]);
 
       if ($response->successful()) {
+        $res = $response->json();
+        if($res['success'] == 'true'){
+          $data = array();
+          $data['seeder'] = $response->json();
         return redirect('/profile-setting')->with('success','profile updated successfilly');
+      }elseif ($res['success'] == 'false') {
+        return redirect('/profile-setting')->withError('Please try later');
+      }
       }else {
       return redirect('/profile-setting')->with('danger','Please try later');
       }
@@ -92,52 +122,67 @@ class HomeController extends Controller
     }
 
     public function upload_profile_pic(Request $request){
-        $id = $request->get('id');
-        $user = User::where('id',$id)->first();
-        $name = $user->name;
-        $profile_pic = $request->get('profile_pic');
-        if($request->hasFile('profile_pic')){
-              $image = $request->file('profile_pic');
-              // dd($image);
-              $filename = $name.".".$request->file('profile_pic')->extension();
-              // dd($filename);
-              $path = $image->move(public_path('/uploads/users/profile/images/'),$filename);
 
-              $user->profile_pic = $filename;
-              $user->profile_pic_url = URL::asset('/uploads/users/profile/images/').'/'.$filename;
-            }
-            $profile_pic_url = $user->profile_pic_url;
-        if ($user) {
-          $update_new = $user->update([
-            'profile_pic' => $filename,
-            'profile_pic_url' => $profile_pic_url,
-          ]);
-        }
-
-        if ($update_new) {
-          return redirect('/profile-setting')->with('success','profile updated successfilly');
-        }
-
+      $datas = $request->all();
+      $datas['is_id'] = Session::get('users')['seeder_id'];
+      $api_token = Session::get('users')['api_token'];
+      $datas['api_token'] = Crypt::encryptString($api_token);
+      $session_id = Session::getId();
+      // dd($datas);
+      if ($request->hasFile('profile_pic') && $request->file('profile_pic')->isValid()) {
+        $image = $request->file('profile_pic');
+        // dd($image);
+        $response = Http::attach('profile_pic', file_get_contents($image), 'paperimg.jpg')
+            ->post('http://127.0.0.1:8000/api/upload_profile_picture', $datas);
+    } else {
+        $response = Http::post('http://127.0.0.1:8000/api/upload_profile_picture',$datas);
     }
 
 
+    if ($response->successful()) {
+      $res = $response->json();
+      if($res['success'] == 'true'){
+        $data = array();
+        $data['seeder'] = $response->json();
+      // dd($data);
+      return redirect('/profile-setting')->with('success','Profile pic uploaded successfully');
+    }elseif ($res['success'] == 'false') {
+      return redirect('/profile-setting')->withError('Please try later');
+    }
+    }else {
+    return redirect('/profile-setting')->with('danger','Please try later');
+    }
+  }
+
+
+
     public function reset_password(Request $request){
+      $datas = $request->all();
+      $datas['is_id'] = Session::get('users')['seeder_id'];
+      $api_token = Session::get('users')['api_token'];
+      $datas['api_token'] = Crypt::encryptString($api_token);
+      $session_id = Session::getId();
 
-      $id = $request->get('id');
-      $user = User::where('id',$id)->first();
+      if ($request->password == $request->password_confirmation) {
 
-      $validated = $request->validate([
-            'current_password' => ['required', new MatchOldPassword],
-            'password' => ['required'],
-            'password_confirmation' => ['same:password'],
-        ]);
-      if ($validated) {
-      $change_password = $user->update([
-        'password' => Hash::make($request->get('password')),
-      ]);
+        $response = Http::post('http://127.0.0.1:8000/api/reset_password',$datas);
+
+        if ($response->successful()) {
+          $res = $response->json();
+          if($res['success'] == 'true'){
+            $data = array();
+            $data['seeder'] = $response->json();
+          // dd($data);
+          return redirect('/change-password')->with('success','Successfully updated Password');
+        }elseif ($res['success'] == 'false') {
+          return redirect('/change-password')->withError('Please try later');
+        }
+        }else {
+        return redirect('/change-password')->with('danger','Please try later');
+        }
+      }else {
+        return redirect('/change-password')->with('danger','new password must match verify password');
       }
-      if ($change_password) {
-        return redirect('/change-password')->with('success','Password updated successfilly');
-      }
+
     }
 }
