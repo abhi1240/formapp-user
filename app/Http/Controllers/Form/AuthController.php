@@ -74,11 +74,13 @@ class AuthController extends Controller
   }
 
   public function seeder_register(Request $request){
+    // dd($request);
     $url = URL::to('');
     // dd($url);
-    $response = Http::accept('application/json')->post('http://127.0.0.1:8000/api/seeder-register',[
+    $response = Http::accept('application/json')->post('http://127.0.0.1:8001/api/seeder-register',[
         'name' => $request->name,
         'email' => $request->email,
+        'phone_num' => $request->phone_num,
         'password' => $request->password,
         'rights' => '0',
         'password_confirmation' => $request->password_confirmation,
@@ -86,11 +88,20 @@ class AuthController extends Controller
     ]);
 
     if ($response->successful()) {
-      $res = $response->json();
+
+      $res['errors'] = $response->json();
+
+      if ($res['errors']) {
+        $data = array();
+        $data['errors'] = $response->json();
+        // dd($data['errors']);
+        $data['errors_all'] = Session::flash('errors_all', $data['errors']['errors']);
+        // dd(Session::all());
+        return redirect('/register');
+      }
       if($res['success'] == 'true'){
         $data = array();
         $data['seeder'] = $response->json();
-        // dd($data['seeder']);
         if(isset($response['seeder']['api_token'])){
           $data['api_token'] = Session::put('api_token', $response['seeder']['api_token']);
         } else {
@@ -106,10 +117,10 @@ class AuthController extends Controller
 
         return redirect('/')->with('success','Successfully created account please login to continue');
       } elseif ($res['success'] == 'false') {
-        return redirect('/register')->withError('Please try later');
+        return redirect('/register')->with('danger','Please try later');
       }
     }
-    return redirect('/register')->withError('Please try later');
+    return redirect('/register')->with('danger','no response');
   }
 
   public function seeder_logout(Request $request){

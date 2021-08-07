@@ -1,11 +1,56 @@
 @extends('home-layouts.app')
 @section('content')
+  <style media="screen">
+  .dzsparallaxer.height-is-based-on-content > div {
+    position: absolute;
+    }
+    .alert{
+      position:relative;
+      top:25px;
+      right: 2rem;
+      width:300px;
+    }
+  </style>
 <div class="">
   <section class="dzsparallaxer auto-init height-is-based-on-content use-loading mode-scroll loaded dzsprx-readyall" data-options="{direction: 'reverse', settings_mode_oneelement_max_offset: '150'}">
         <!-- Parallax Image -->
         <div class="divimage dzsparallaxer--target w-100 u-bg-overlay g-bg-size-cover g-bg-bluegray-opacity-0_3--after" style="height: 140%; background-image: url(theme/assets/img-temp/1920x1080/img35.jpg);"></div>
-        <!-- End Parallax Image -->
+        
+        @if(session()->has('errors_all'))
+      <div class="alert alert-danger alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          @foreach (session()->get('errors_all') as $key => $value)
+            @foreach ($value as $key1 => $value1)
+                {{ $value1 }}
+            @endforeach
+          @endforeach
+      </div>
+        @endif
 
+        @if(session()->has('success'))
+      <div class="alert alert-success alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ session()->get('success') }}
+      </div>
+        @endif
+        @if(session()->has('warning'))
+      <div class="alert alert-warning alert-dismissable">
+        <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ session()->get('warning') }}
+      </div>
+        @endif
+          @if(session()->has('info'))
+       <div class="alert alert-info alert-dismissable">
+         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+           {{ session()->get('info') }}
+       </div>
+         @endif
+          @if(session()->has('danger'))
+       <div class="alert alert-danger alert-dismissable">
+         <a href="#" class="close mr-2" data-dismiss="alert" aria-label="close">&times;</a>
+           {{ session()->get('danger') }}
+       </div>
+         @endif
         <div class="container g-pt-100 g-pb-20">
           <div class="row justify-content-between">
             <div class="col-md-6 col-lg-5 flex-md-unordered align-self-center g-mb-80">
@@ -23,7 +68,7 @@
                     <span class="input-group-addon g-width-45 g-brd-gray-light-v4 g-color-primary">
                         <i class="icon-finance-067 u-line-icon-pro"></i>
                       </span>
-                      <input id="name" type="text" class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control @error('email') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter name">
+                      <input id="name" type="text" class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Enter name">
 
                       @error('name')
                           <span class="invalid-feedback" role="alert">
@@ -49,6 +94,22 @@
                  <!-- <input class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15"  name="email" placeholder="Email" id="email" type="email"> -->
                </div>
              </div>
+
+             <div class="mb-4">
+            <div class="input-group g-brd-primary--focus">
+              <span class="input-group-addon g-width-45 g-brd-gray-light-v4 g-color-primary">
+                  <i class="icon-phone u-line-icon-pro"></i>
+                </span>
+                <input id="phone_num" type="text" class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15 form-control @error('phone_num ') is-invalid @enderror" name="phone_num" value="{{ old('phone_num') }}" required autocomplete="phone_num" autofocus placeholder="Enter phone ">
+
+                @error('phone_num')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+              <!-- <input class="form-control g-color-black g-brd-left-none g-bg-white g-brd-gray-light-v4 g-pl-0 g-pr-15 g-py-15"  name="email" placeholder="Email" id="email" type="email"> -->
+            </div>
+          </div>
 
                 <div class="mb-4">
                   <div class="input-group g-brd-primary--focus">
